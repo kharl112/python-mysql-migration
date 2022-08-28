@@ -1,5 +1,6 @@
 import os
 import mysql.connector
+from getpass import getpass
 
 def isDirectory(path):
     return os.path.isdir(path)
@@ -20,14 +21,14 @@ def getDirContent(path, paths):
             paths.append(full_path)
     return paths
 
-def executeSQLFiles(path):
+def executeSQLFiles(path, user, password, database):
     files = getDirContent(path, None)
 
     database = mysql.connector.connect(
             host="localhost",
-            user="phpmyadmin",
-            password="_Mementomori112",
-            database="python_sql"
+            user=user,
+            password=password,
+            database=database
     )
 
     cursor = database.cursor()
@@ -48,4 +49,8 @@ def executeSQLFiles(path):
     print("database closed")
 
 path = input("enter the source directory: ")
-executeSQLFiles(path)
+database = input("enter the database name: ")
+user = input("enter username: ")
+password = getpass("enter your password: ")
+
+executeSQLFiles(path, user, password, database)
